@@ -17,7 +17,7 @@ for i in range(0, m):
 n = len(A[0])
 print(f"m: {m}     n: {n}")
 def print_mat():
-    for line in A:
+    for line in A[0:m]:
         print("|", end = " ")
         for el in line[:-1-linii_de_0]:
             print(el, end = " ")
@@ -47,6 +47,7 @@ for j in range(0,n):
         break
 
     # FACEM 1 PE PIVOTUL i j
+
     if A[j][j] != 1:
         for i in range(j+1,m):
             if A[i][j] != 0 and A[j][j] % A[i][j] != 0:
@@ -59,6 +60,10 @@ for j in range(0,n):
                     else: 
                         print(f"SUNT EGALE {A[j][j]} si {A[i][j]}")
                         break
+    if A[j][j] < 1.00001 or A[j][j] > 0.99999:
+        if A[j][j] < -0.00001 or A[j][j] > 0.00001:
+            for i in range(j,n):
+                A[j][i]/=A[j][j]
     # FACEM 0 SUB PIVOTUL i j
     if A[j][j] == 1:
         for i in range(j+1,m):
@@ -68,7 +73,7 @@ for j in range(0,n):
 
 i = 0
 while i < m-linii_de_0:
-    if max(A[i]) == min(A[i]) == 0:
+    if (max(A[i]) == min(A[i])) and (-0.00001 < max(A[i]) < 0.00001):
         swap_line(i,m-1-linii_de_0)
         linii_de_0 += 1
         i -= 1
@@ -88,6 +93,11 @@ for i in range(m-1,-1,-1):
     for j in range(i-1,-1,-1):
         sub(j,i,A[j][i])
 
-print(linii_de_0)
-
 print_mat()
+for i in range(0,m):
+    print(f"x{i+1} = ",end="")
+    for j in range(n-linii_de_0-1,n-linii_de_0+1):
+        if j+1 < n:
+            print(f"{A[i][j]}*x{j+1}",end=" + ")
+        else: 
+            print(A[i][j])
